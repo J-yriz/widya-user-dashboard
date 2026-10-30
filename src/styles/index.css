@@ -1,0 +1,222 @@
+/* ─────────────────────────────────────────────────────────────
+   Botanical × Technical Blueprint — Design Token Layer
+   Single source of truth. No arbitrary values in components.
+   ───────────────────────────────────────────────────────────── */
+
+@import 'tailwindcss';
+
+@theme {
+  /* ── Color: Ink ─────────────────────────────────────────── */
+  --color-ink-900: #1e0c1f; /* text primary, dark surface */
+  --color-ink-700: #2b1621; /* border + secondary text base */
+  --color-ink-500: #5b223e; /* shadow tint (plum) */
+
+  /* ── Color: Surface ─────────────────────────────────────── */
+  --color-canvas: #f9efe4;
+  --color-surface: #f8ede2;
+
+  /* ── Color: Accent ──────────────────────────────────────── */
+  --color-orchid: #d946ef;
+  --color-lilac: #f6d6ff;
+  --color-violet: #a78bfa;
+  --color-forest: #022c22;
+  --color-emerald: #10b981;
+  --color-mint: #a7f3d0;
+  --color-lime: #d9f99d;
+
+  /* ── Alpha ladder (WCAG AA corrected) ───────────────────── */
+  --color-hairline: rgb(43 22 33 / 0.1);
+  --color-marker: rgb(43 22 33 / 0.25);
+  --color-muted: rgb(43 22 33 / 0.7); /* 5.84:1 — AA ✓ */
+  --color-subtle: rgb(43 22 33 / 0.72); /* 6.2:1  — AA ✓ */
+
+  /* ── Type ───────────────────────────────────────────────── */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  --text-display: 8rem;
+  --text-display--line-height: 1;
+  --text-display--letter-spacing: -0.05em;
+
+  --text-h1: 3.75rem;
+  --text-h1--line-height: 0.98;
+  --text-h1--letter-spacing: -0.025em;
+
+  --text-h2: 2.25rem;
+  --text-h2--line-height: 1.11;
+  --text-h2--letter-spacing: -0.025em;
+
+  --text-h3: 1.5rem;
+  --text-h3--line-height: 1.33;
+  --text-h3--letter-spacing: -0.025em;
+
+  --text-label: 0.75rem;
+  --text-label--line-height: 1.2;
+  --text-label--letter-spacing: 0.24em;
+
+  --text-micro: 0.62rem;
+  --text-micro--line-height: 1.2;
+  --text-micro--letter-spacing: 0.2em;
+
+  /* ── Radius (sharp-first) ───────────────────────────────── */
+  --radius-none: 0px;
+  --radius-xs: 2px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 40px;
+
+  /* ── Elevation (brand-tinted) ───────────────────────────── */
+  --shadow-flat: 0 1px 2px rgb(0 0 0 / 0.05);
+  --shadow-card: 0 32px 64px rgb(91 34 62 / 0.1);
+  --shadow-hero: 0 32px 80px rgb(2 44 34 / 0.18);
+  --shadow-panel: 0 32px 64px rgb(43 22 33 / 0.2);
+  --shadow-glow: 0 16px 40px rgb(16 185 129 / 0.28);
+
+  /* ── Motion ─────────────────────────────────────────────── */
+  --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-shimmer: shimmer 1.6s ease-in-out infinite;
+  --animate-fade-in: fade-in var(--dur-base) var(--ease-brand) both;
+  --animate-rise: rise var(--dur-base) var(--ease-brand) both;
+}
+
+:root {
+  /* Non-utility tokens (used in raw CSS below) */
+  --dur-fast: 150ms;
+  --dur-base: 300ms;
+  --dur-img: 700ms;
+  --blur-glass: 24px;
+  --container-max: 1536px;
+  --gutter: 32px;
+  --section-gap: 16px;
+
+  /* Blueprint motifs */
+  --dot-grid: linear-gradient(135deg, rgb(43 22 33 / 0.035) 1px, transparent 1px);
+  --dot-size-sm: 24px;
+  --dot-size-md: 4.75rem;
+  --dot-size-lg: 5.5rem;
+
+  color-scheme: light;
+}
+
+@layer base {
+  * {
+    @apply border-hairline;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-canvas font-sans text-ink-900 antialiased;
+    letter-spacing: -0.16px;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* ── Focus-visible: fix for reference a11y gap ──────────── */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-orchid;
+  }
+
+  /* Skip-link */
+  .skip-link {
+    @apply sr-only;
+  }
+  .skip-link:focus-visible {
+    @apply not-sr-only fixed top-3 left-3 z-[100] bg-ink-900 px-4 py-2 text-sm font-medium text-surface shadow-card;
+  }
+
+  ::selection {
+    @apply bg-lilac text-ink-900;
+  }
+
+  /* Scrollbar — thin, brand-tinted */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(43 22 33 / 0.25) transparent;
+  }
+}
+
+@layer components {
+  /* ── Blueprint dot-grid surface ─────────────────────────── */
+  .blueprint-grid {
+    background-image: var(--dot-grid);
+    background-size: var(--dot-size-sm) var(--dot-size-sm);
+  }
+  .blueprint-grid-md {
+    background-image: var(--dot-grid);
+    background-size: var(--dot-size-md) var(--dot-size-md);
+  }
+  .blueprint-grid-lg {
+    background-image: var(--dot-grid);
+    background-size: var(--dot-size-lg) var(--dot-size-lg);
+  }
+
+  /* ── Glass surface ──────────────────────────────────────── */
+  .glass {
+    @apply border border-hairline bg-surface/70 backdrop-blur-xl;
+  }
+
+  /* ── Eyebrow label ──────────────────────────────────────── */
+  .eyebrow {
+    @apply text-label font-medium uppercase text-muted;
+  }
+
+  /* ── Dot indicator ──────────────────────────────────────── */
+  .dot {
+    @apply size-1.5 shrink-0 rounded-full;
+  }
+}
+
+/* ── Keyframes ────────────────────────────────────────────── */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Skeleton ─────────────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgb(43 22 33 / 0.06) 25%,
+    rgb(43 22 33 / 0.12) 50%,
+    rgb(43 22 33 / 0.06) 75%
+  );
+  background-size: 200% 100%;
+  animation: var(--animate-shimmer);
+}
+
+/* ── Reduced motion ───────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
